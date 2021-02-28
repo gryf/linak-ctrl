@@ -113,8 +113,8 @@ class LinakDevice:
         if self._dev.is_kernel_driver_active(0):
             self._dev.detach_kernel_driver(0)
 
-    def get_position(self, loop=False):
-        if loop:
+    def get_position(self, args):
+        if args.loop:
             try:
                 while True:
                     report = self._get_report()
@@ -126,21 +126,21 @@ class LinakDevice:
                 return
         else:
             report = self._get_report()
-            LOG.warning('Position: %s, height: %scm, moving: %s',
+            LOG.warning('Position: %s, height: %.2fcm, moving: %s',
                         report.position, report.position_in_cm, report.moving)
 
-    def move(self, position):
+    def move(self, args):
         retry_count = 3
         previous_position = 0
 
         while True:
-            self._move(position)
+            self._move(args.position)
             time.sleep(0.2)
 
             status_report = self._get_report()
             LOG.info("Current position: %s", status_report.position)
 
-            if status_report.position == position:
+            if status_report.position == args.position:
                 break
 
             if previous_position == status_report.position:
@@ -177,6 +177,8 @@ class LinakDevice:
 
 
 def main():
+    device = LinakDevice()
+
     parser = argparse.ArgumentParser('An utility to interact with USB2LIN06 '
                                      'device.')
     subparsers = parser.add_subparsers(help='supported commands',
@@ -186,10 +188,12 @@ def main():
                                           'device.')
     parser_status.add_argument('-l', '--loop', help='run indefinitely, use '
                                'ctrl-c to stop.', action="store_true")
+    parser_status.set_defaults(func=device.get_position)
     parser_move = subparsers.add_parser('move', help='move to the desired '
                                         'height. Note, that height need to be '
                                         'provided as reported by status.')
     parser_move.add_argument('position', type=int)
+    parser_move.set_defaults(func=device.move)
     group = parser.add_mutually_exclusive_group()
     group.add_argument("-q", "--quiet", help='please, be quiet. Adding more '
                        '"q" will decrease verbosity', action="count",
@@ -200,12 +204,7 @@ def main():
 
     LOG.set_verbose(args.verbose, args.quiet)
 
-    device = LinakDevice()
-
-    if args.subcommand == 'move':
-        device.move(args.position)
-    elif args.subcommand == 'status':
-        device.get_position(args.loop)
+    args.func(args)
 
 
 if __name__ == '__main__':
