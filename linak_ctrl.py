@@ -115,12 +115,15 @@ class LinakDevice:
 
     def get_position(self, loop=False):
         if loop:
-            while True:
-                report = self._get_report()
-                LOG.warning('Position: %s, height: %.2fcm, moving: %s',
-                            report.position, report.position_in_cm,
-                            report.moving)
-                time.sleep(0.2)
+            try:
+                while True:
+                    report = self._get_report()
+                    LOG.warning('Position: %s, height: %.2fcm, moving: %s',
+                                report.position, report.position_in_cm,
+                                report.moving)
+                    time.sleep(0.2)
+            except KeyboardInterrupt:
+                return
         else:
             report = self._get_report()
             LOG.warning('Position: %s, height: %scm, moving: %s',
