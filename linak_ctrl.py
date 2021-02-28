@@ -76,8 +76,6 @@ LOG = Logger(__name__)()
 class StatusReport:
     """
     Get the status: position and movement
-    # min: 0, 67cm od podłogi + grubość blatu (note - kółka)
-    # max: 6480, 132cm + grubość blatu
 
     Measurement height in cm has been taken manually. In minimal height,
     height from floor to the underside of the desktop and is 67cm. Note, this
@@ -188,7 +186,7 @@ def main():
     parser_move = subparsers.add_parser('move', help='move to the desired '
                                         'height. Note, that height need to be '
                                         'provided as reported by status.')
-    parser_move.add_argument('height', type=int)
+    parser_move.add_argument('position', type=int)
     group = parser.add_mutually_exclusive_group()
     group.add_argument("-q", "--quiet", help='please, be quiet. Adding more '
                        '"q" will decrease verbosity', action="count",
@@ -202,7 +200,7 @@ def main():
     device = LinakDevice()
 
     if args.subcommand == 'move':
-        device.move(args.height)
+        device.move(args.position)
     elif args.subcommand == 'status':
         device.get_position(args.loop)
 
