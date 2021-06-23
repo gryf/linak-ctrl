@@ -14,9 +14,12 @@ REQ_TYPE_GET_INTERFACE = 0xa1
 REQ_TYPE_SET_INTERFACE = 0x21
 HID_GET_REPORT = 0x01
 HID_SET_REPORT = 0x09
+INIT = 0x0303
 MOVE = 0x0305
 GET_STATUS = 0x0304
 BUF_LEN = 64
+MODE_OF_OPERATION = 0x03
+MODE_OF_OPERATION_DEFAULT = 0x04
 
 
 class Logger:
@@ -108,6 +111,17 @@ class LinakDevice:
     def __init__(self):
         self._dev = usb.core.find(idVendor=LinakDevice.VEND,
                                   idProduct=LinakDevice.PROD)
+
+        # init device
+        buf = [0 for _ in range(BUF_LEN)]
+        buf[0] = MODE_OF_OPERATION          # 0x03 Feature report ID = 3
+        buf[1] = MODE_OF_OPERATION_DEFAULT  # 0x04 mode of operation
+        buf[2] = 0x00                       # ?
+        buf[3] = 0xfb                       # ?
+        self._dev.ctrl_transfer(REQ_TYPE_SET_INTERFACE, HID_SET_REPORT, INIT,
+                                0, array.array('B', buf))
+        # hold a little bit, to make it effect.
+        time.sleep(0.5)
 
         # detach kernel driver, if attached
         if self._dev.is_kernel_driver_active(0):
