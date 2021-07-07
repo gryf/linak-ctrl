@@ -112,6 +112,10 @@ class LinakDevice:
         self._dev = usb.core.find(idVendor=LinakDevice.VEND,
                                   idProduct=LinakDevice.PROD)
 
+        # detach kernel driver, if attached
+        if self._dev.is_kernel_driver_active(0):
+            self._dev.detach_kernel_driver(0)
+
         # init device
         buf = [0 for _ in range(BUF_LEN)]
         buf[0] = MODE_OF_OPERATION          # 0x03 Feature report ID = 3
@@ -122,10 +126,6 @@ class LinakDevice:
                                 0, array.array('B', buf))
         # hold a little bit, to make it effect.
         time.sleep(0.5)
-
-        # detach kernel driver, if attached
-        if self._dev.is_kernel_driver_active(0):
-            self._dev.detach_kernel_driver(0)
 
     def get_position(self, args):
         try:
