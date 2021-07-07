@@ -2,6 +2,9 @@
 Linak-ctrl
 ==========
 
+.. image:: https://badge.fury.io/py/linak-ctrl.svg
+   :target: https://badge.fury.io/py/linak-ctrl
+
 Simple python script to control Linak powered desks and USB2LIN06 cable.
 
 
@@ -12,6 +15,31 @@ Requirements
 * USB2LIN06 device
 * Python
 * `pyusb`_
+
+
+Installation
+============
+
+There are couple of different ways for installing ``linak-ctrl``. One of the
+preferred ways is to use virtualenv and pip:
+
+.. code:: shell-session
+
+   $ git clone https://github.com/gryf/linak-ctrl
+   $ cd linak-ctrl
+   linak-ctrl $ python -m venv linak
+   (linak) linak-ctrl $ pip install .
+   (linak) linak-ctrl $ linak-ctrl status
+   Position: 767, height: 78.80cm, moving: False
+
+Or, you can install it system-wide:
+
+.. code:: shell-session
+
+   $ sudo pip install linak-ctrl
+
+And finally, you could also install dependences from your system repositories,
+and use script directly, by placing it somewhere in your ``$PATH``.
 
 
 Usage
