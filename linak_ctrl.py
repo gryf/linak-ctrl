@@ -128,20 +128,17 @@ class LinakDevice:
             self._dev.detach_kernel_driver(0)
 
     def get_position(self, args):
-        if args.loop:
-            try:
-                while True:
-                    report = self._get_report()
-                    LOG.warning('Position: %s, height: %.2fcm, moving: %s',
-                                report.position, report.position_in_cm,
-                                report.moving)
-                    time.sleep(0.2)
-            except KeyboardInterrupt:
-                return
-        else:
-            report = self._get_report()
-            LOG.warning('Position: %s, height: %.2fcm, moving: %s',
-                        report.position, report.position_in_cm, report.moving)
+        try:
+            while True:
+                report = self._get_report()
+                LOG.warning('Position: %s, height: %.2fcm, moving: %s',
+                            report.position, report.position_in_cm,
+                            report.moving)
+                if not args.loop:
+                    break
+                time.sleep(0.2)
+        except KeyboardInterrupt:
+            return
 
     def move(self, args):
         retry_count = 3
