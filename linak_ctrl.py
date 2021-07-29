@@ -111,6 +111,10 @@ class LinakDevice:
     def __init__(self):
         self._dev = usb.core.find(idVendor=LinakDevice.VEND,
                                   idProduct=LinakDevice.PROD)
+        if not self._dev:
+            raise ValueError(f'Device {LinakDevice.VEND}:'
+                             f'{LinakDevice.PROD:04d} '
+                             f'not found!')
 
         # detach kernel driver, if attached
         if self._dev.is_kernel_driver_active(0):
@@ -188,7 +192,11 @@ class LinakDevice:
 
 
 def main():
-    device = LinakDevice()
+    try:
+        device = LinakDevice()
+    except ValueError as ex:
+        sys.stderr.write(ex.args[0] + '\n')
+        sys.exit(1)
 
     parser = argparse.ArgumentParser('An utility to interact with USB2LIN06 '
                                      'device.')
