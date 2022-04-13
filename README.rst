@@ -36,7 +36,7 @@ Or, you can install it system-wide:
 
 .. code:: shell-session
 
-   $ sudo pip install linak-ctrl
+   # sudo pip install linak-ctrl
 
 And finally, you could also install dependences from your system repositories,
 and use script directly, by placing it somewhere in your ``$PATH``.
@@ -52,7 +52,7 @@ number, and in centimeters, and information if desk is moving.
 
 .. code:: shell-session
 
-   $ linak_ctrl.py status
+   $ linak_ctrl/__init__.py status
    Position: 767, height: 78.80cm, moving: False
 
 Note, that height was measured manually and may differ depending if desk have
@@ -63,7 +63,7 @@ information from USB2LIN06 device every 0.2 seconds:
 
 .. code:: shell-session
 
-   $ linak_ctrl.py status -l
+   $ linak_ctrl/__init__.py status -l
    Position: 2161, height: 100.25cm, moving: True
    Position: 2109, height: 99.45cm, moving: True
    Position: 2026, height: 98.17cm, moving: True
@@ -81,14 +81,14 @@ my case). For example:
 
 .. code:: shell-session
 
-   $ linak_ctrl.py move 1000
+   $ linak_ctrl/__init__.py move 1000
 
 For displaying debug information verbosity can be increased using ``--verbose``
 parameter:
 
 .. code:: shell-session
 
-   $ linak_ctrl.py -v move 1000
+   $ linak_ctrl/__init__.py -v move 1000
    Current position: 771
    Current position: 792
    Current position: 825
@@ -101,7 +101,7 @@ Adding more `-v` will increase amount of information:
 
 .. code:: shell-session
 
-   $ linak_ctrl.py -vv move 1000
+   $ linak_ctrl/__init__.py -vv move 1000
    array('B', [4, 56, 17, 8, 3, 3, 0, 57, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 232, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0])
    Current position: 771
    array('B', [4, 56, 17, 0, 21, 3, 0, 129, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 232, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0])
