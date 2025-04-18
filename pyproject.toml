@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools >= 61.0"]
+requires = ["setuptools >= 77.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -14,12 +14,11 @@ readme = "README.rst"
 authors = [
     {name = "Roman Dobosz", email = "gryf73@gmail.com"}
 ]
-license = {text = "BSD"}
+license = "BSD-3-Clause"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: Console",
     "Intended Audience :: End Users/Desktop",
-    "License :: OSI Approved :: BSD License",
     "Operating System :: POSIX :: Linux",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
